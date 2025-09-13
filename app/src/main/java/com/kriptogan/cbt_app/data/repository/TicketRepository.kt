@@ -133,17 +133,11 @@ object TicketRepository {
      * Loads tickets from persistent storage.
      */
     private suspend fun loadTicketsFromStorage() {
-        android.util.Log.d("datastore test", "Repository: Initiating load from storage...")
-        
         dataStoreManager?.let { manager ->
-            android.util.Log.d("datastore test", "Repository: DataStore manager found, calling loadTickets()")
-            val savedTickets = manager.loadTickets()
-            android.util.Log.d("datastore test", "Repository: Loaded ${savedTickets.size} tickets from DataStore")
-            
+           val savedTickets = manager.loadTickets()
             tickets.clear()
             tickets.addAll(savedTickets)
-            android.util.Log.d("datastore test", "Repository: Tickets loaded into memory, total: ${tickets.size}")
-        } ?: run {
+           } ?: run {
             android.util.Log.e("datastore test", "Repository: ❌ DataStore manager is null during load!")
         }
     }
@@ -152,11 +146,7 @@ object TicketRepository {
      * Saves tickets to persistent storage.
      */
     private suspend fun saveTicketsToStorage() {
-        android.util.Log.d("datastore test", "Repository: Initiating save to storage...")
-        android.util.Log.d("datastore test", "Repository: Current tickets in memory: ${tickets.size}")
-        
         dataStoreManager?.let { manager ->
-            android.util.Log.d("datastore test", "Repository: DataStore manager found, calling saveTickets()")
             manager.saveTickets(tickets)
         } ?: run {
             android.util.Log.e("datastore test", "Repository: ❌ DataStore manager is null!")

@@ -47,7 +47,7 @@ fun TicketList(
             modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                top = 80.dp, // Extra top padding to account for status bar and button
+                top = 140.dp, // Extra top padding to account for status bar and button
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 16.dp
