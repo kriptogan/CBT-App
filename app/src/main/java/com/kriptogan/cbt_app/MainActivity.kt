@@ -16,6 +16,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kriptogan.cbt_app.data.model.Ticket
+import com.kriptogan.cbt_app.data.repository.TicketRepository
+import com.kriptogan.cbt_app.ui.components.TicketList
 import com.kriptogan.cbt_app.ui.screens.TicketFormScreen
 import com.kriptogan.cbt_app.ui.theme.CBTappTheme
 
@@ -42,6 +46,14 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     var showForm by remember { mutableStateOf(false) }
+    var tickets by remember { mutableStateOf<List<Ticket>>(emptyList()) }
+    
+    // Refresh tickets when returning from form
+    LaunchedEffect(showForm) {
+        if (!showForm) {
+            tickets = TicketRepository.getAllTickets()
+        }
+    }
     
     if (showForm) {
         TicketFormScreen(
@@ -49,7 +61,11 @@ fun MainScreen() {
         )
     } else {
         Box(modifier = Modifier.fillMaxSize()) {
-            // Main content area - empty for now
+            // Ticket list
+            TicketList(
+                tickets = tickets,
+                modifier = Modifier.fillMaxSize()
+            )
             
             // Plus button positioned at top-right
             FloatingActionButton(

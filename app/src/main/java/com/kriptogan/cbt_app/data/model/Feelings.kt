@@ -12,7 +12,14 @@ data class Feelings(
 ) {
     init {
         require(intensity in 0..100) { "Intensity must be between 0 and 100" }
-        require(description.isNotBlank()) { "Description cannot be blank" }
+    }
+    
+    /**
+     * Validates that the feeling has a non-blank description.
+     * This should be called before saving the ticket.
+     */
+    fun isValid(): Boolean {
+        return description.isNotBlank()
     }
     
     /**

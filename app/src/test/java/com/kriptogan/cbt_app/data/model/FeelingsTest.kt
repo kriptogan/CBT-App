@@ -43,16 +43,31 @@ class FeelingsTest {
         Feelings("Excited", 101)
     }
     
-    @Test(expected = IllegalArgumentException::class)
-    fun `throws exception when description is blank`() {
-        // When
-        Feelings("", 50)
+    @Test
+    fun `allows blank description during creation`() {
+        // Given & When
+        val feelings = Feelings("", 50)
+        
+        // Then
+        assertFalse(feelings.isValid())
     }
     
-    @Test(expected = IllegalArgumentException::class)
-    fun `throws exception when description is whitespace only`() {
-        // When
-        Feelings("   ", 50)
+    @Test
+    fun `allows whitespace only description during creation`() {
+        // Given & When
+        val feelings = Feelings("   ", 50)
+        
+        // Then
+        assertFalse(feelings.isValid())
+    }
+    
+    @Test
+    fun `isValid returns true for valid description`() {
+        // Given
+        val feelings = Feelings("Happy", 80)
+        
+        // When & Then
+        assertTrue(feelings.isValid())
     }
     
     @Test

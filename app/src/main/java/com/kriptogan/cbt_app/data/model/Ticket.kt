@@ -27,6 +27,7 @@ data class Ticket(
         require(behaviour.isNotBlank()) { "Behaviour cannot be blank" }
         require(symptoms.isNotBlank()) { "Symptoms cannot be blank" }
         require(feelings.isNotEmpty()) { "At least one feeling must be specified" }
+        require(feelings.all { it.isValid() }) { "All feelings must have valid descriptions" }
     }
     
     /**
