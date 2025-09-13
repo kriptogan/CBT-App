@@ -42,6 +42,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.kriptogan.cbt_app.R
 import com.kriptogan.cbt_app.data.model.Feelings
 import com.kriptogan.cbt_app.data.model.Ticket
 import com.kriptogan.cbt_app.data.repository.TicketRepository
@@ -65,12 +67,24 @@ fun TicketFormScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Create Ticket - Step ${currentStep + 1}/$totalSteps") },
+                title = { 
+                    Text(
+                        when (currentStep) {
+                            0 -> stringResource(R.string.step_event)
+                            1 -> stringResource(R.string.step_thoughts)
+                            2 -> stringResource(R.string.step_feelings)
+                            3 -> stringResource(R.string.step_behavior)
+                            4 -> stringResource(R.string.step_symptoms)
+                            5 -> stringResource(R.string.step_review)
+                            else -> stringResource(R.string.step_event)
+                        } + " - ${currentStep + 1}/$totalSteps"
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back_content_description)
                         )
                     }
                 }
@@ -147,10 +161,10 @@ fun TicketFormScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(
-                            imageVector = Icons.Default.KeyboardArrowLeft,
+                            imageVector = Icons.Default.KeyboardArrowRight,
                             contentDescription = null
                         )
-                        Text("Back")
+                        Text(stringResource(R.string.back))
                     }
                 }
                 
@@ -204,11 +218,11 @@ fun TicketFormScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = if (currentStep < totalSteps - 1) "Next" else "Finish"
+                        text = if (currentStep < totalSteps - 1) stringResource(R.string.next) else stringResource(R.string.finish)
                     )
                     if (currentStep < totalSteps - 1) {
                         Icon(
-                            imageVector = Icons.Default.KeyboardArrowRight,
+                            imageVector = Icons.Default.KeyboardArrowLeft,
                             contentDescription = null
                         )
                     } else {
@@ -231,8 +245,8 @@ private fun EventDescriptionStep(
     OutlinedTextField(
         value = eventDescription,
         onValueChange = onEventDescriptionChange,
-        label = { Text("Event Description") },
-        placeholder = { Text("Describe what happened...") },
+        label = { Text(stringResource(R.string.event_description_label)) },
+        placeholder = { Text(stringResource(R.string.event_description_hint)) },
         modifier = Modifier.fillMaxWidth(),
         minLines = 4,
         maxLines = 8
@@ -247,8 +261,8 @@ private fun ThoughtsStep(
     OutlinedTextField(
         value = thoughts,
         onValueChange = onThoughtsChange,
-        label = { Text("Your Thoughts") },
-        placeholder = { Text("What were you thinking?") },
+        label = { Text(stringResource(R.string.thoughts_label)) },
+        placeholder = { Text(stringResource(R.string.thoughts_hint)) },
         modifier = Modifier.fillMaxWidth(),
         minLines = 4,
         maxLines = 8
@@ -264,7 +278,7 @@ private fun FeelingsStep(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Add your feelings with intensity levels:",
+            text = stringResource(R.string.add_feelings_description),
             style = MaterialTheme.typography.bodyMedium
         )
         
@@ -293,7 +307,7 @@ private fun FeelingsStep(
             modifier = Modifier.fillMaxWidth()
         ) {
             Icon(imageVector = Icons.Default.Add, contentDescription = null)
-            Text("Add Feeling")
+            Text(stringResource(R.string.add_feeling))
         }
     }
 }
@@ -320,20 +334,20 @@ private fun FeelingItem(
                 OutlinedTextField(
                     value = feeling.description,
                     onValueChange = { onFeelingChange(feeling.copy(description = it)) },
-                    label = { Text("Feeling") },
-                    placeholder = { Text("e.g., Anxious, Happy, Sad") },
+                    label = { Text(stringResource(R.string.feeling_description_label)) },
+                    placeholder = { Text(stringResource(R.string.feeling_description_hint)) },
                     modifier = Modifier.weight(1f)
                 )
                 
                 IconButton(onClick = onRemove) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Remove feeling"
+                        contentDescription = stringResource(R.string.remove_feeling_content_description)
                     )
                 }
             }
             
-            Text("Intensity: ${feeling.intensity}%")
+            Text(stringResource(R.string.feeling_intensity, feeling.intensity))
             
             Slider(
                 value = feeling.intensity.toFloat(),
@@ -353,8 +367,8 @@ private fun BehaviourStep(
     OutlinedTextField(
         value = behaviour,
         onValueChange = onBehaviourChange,
-        label = { Text("Your Behaviour") },
-        placeholder = { Text("How did you act or respond?") },
+        label = { Text(stringResource(R.string.behavior_label)) },
+        placeholder = { Text(stringResource(R.string.behavior_hint)) },
         modifier = Modifier.fillMaxWidth(),
         minLines = 4,
         maxLines = 8
@@ -369,8 +383,8 @@ private fun SymptomsStep(
     OutlinedTextField(
         value = symptoms,
         onValueChange = onSymptomsChange,
-        label = { Text("Physical/Emotional Symptoms") },
-        placeholder = { Text("What symptoms did you notice?") },
+        label = { Text(stringResource(R.string.symptoms_label)) },
+        placeholder = { Text(stringResource(R.string.symptoms_hint)) },
         modifier = Modifier.fillMaxWidth(),
         minLines = 4,
         maxLines = 8
@@ -388,11 +402,11 @@ private fun ReviewStep(
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        ReviewCard("Event Description", eventDescription)
-        ReviewCard("Thoughts", thoughts)
-        ReviewCard("Feelings", feelings.joinToString(", ") { "${it.description} (${it.intensity}%)" })
-        ReviewCard("Behaviour", behaviour)
-        ReviewCard("Symptoms", symptoms)
+        ReviewCard(stringResource(R.string.review_event_description), eventDescription)
+        ReviewCard(stringResource(R.string.review_thoughts), thoughts)
+        ReviewCard(stringResource(R.string.review_feelings), feelings.joinToString(", ") { "${it.description} (${it.intensity}%)" })
+        ReviewCard(stringResource(R.string.review_behaviour), behaviour)
+        ReviewCard(stringResource(R.string.review_symptoms), symptoms)
     }
 }
 
@@ -419,26 +433,28 @@ private fun ReviewCard(title: String, content: String) {
     }
 }
 
+@Composable
 private fun getStepTitle(step: Int): String {
     return when (step) {
-        0 -> "Event Description"
-        1 -> "Thoughts"
-        2 -> "Feelings"
-        3 -> "Behaviour"
-        4 -> "Symptoms"
-        5 -> "Review"
+        0 -> stringResource(R.string.step_event)
+        1 -> stringResource(R.string.step_thoughts)
+        2 -> stringResource(R.string.step_feelings)
+        3 -> stringResource(R.string.step_behavior)
+        4 -> stringResource(R.string.step_symptoms)
+        5 -> stringResource(R.string.step_review)
         else -> "Unknown Step"
     }
 }
 
+@Composable
 private fun getStepDescription(step: Int): String {
     return when (step) {
-        0 -> "Describe the event that triggered this ticket"
-        1 -> "What thoughts did you have about this event?"
-        2 -> "What feelings did you experience? (with intensity)"
-        3 -> "How did you behave in response to this event?"
-        4 -> "What physical or emotional symptoms did you notice?"
-        5 -> "Review all information before creating the ticket"
+        0 -> stringResource(R.string.step_description_event)
+        1 -> stringResource(R.string.step_description_thoughts)
+        2 -> stringResource(R.string.step_description_feelings)
+        3 -> stringResource(R.string.step_description_behavior)
+        4 -> stringResource(R.string.step_description_symptoms)
+        5 -> stringResource(R.string.step_description_review)
         else -> "Unknown step description"
     }
 }

@@ -1,3 +1,59 @@
 <resources>
-    <string name="app_name">CBT-app</string>
+    <string name="app_name">אפליקציית CBT</string>
+    
+    <!-- Main Screen -->
+    <string name="no_tickets_yet">אין כרטיסים עדיין</string>
+    <string name="tap_plus_to_create">לחץ על + כדי ליצור את הכרטיס הראשון שלך</string>
+    
+    <!-- Form Screen -->
+    <string name="step_event">תיאור האירוע</string>
+    <string name="step_thoughts">מחשבות</string>
+    <string name="step_feelings">רגשות</string>
+    <string name="step_behavior">התנהגות</string>
+    <string name="step_symptoms">תסמינים</string>
+    <string name="step_review">סקירה</string>
+    
+    <!-- Form Fields -->
+    <string name="event_description_label">תיאור האירוע</string>
+    <string name="event_description_hint">תאר את האירוע שקרה</string>
+    <string name="thoughts_label">מחשבות</string>
+    <string name="thoughts_hint">מה חשבת באותו רגע?</string>
+    <string name="behavior_label">התנהגות</string>
+    <string name="behavior_hint">איך התנהגת?</string>
+    <string name="symptoms_label">תסמינים</string>
+    <string name="symptoms_hint">אילו תסמינים פיזיים הרגשת?</string>
+    <string name="feeling_description_label">תיאור הרגש</string>
+    <string name="feeling_description_hint">תאר את הרגש</string>
+    <string name="feeling_intensity">עוצמה: %d%%</string>
+    
+    <!-- Buttons -->
+    <string name="back">חזור</string>
+    <string name="next">הבא</string>
+    <string name="finish">סיום</string>
+    <string name="add_feeling">הוסף רגש</string>
+    <string name="remove_feeling">הסר רגש</string>
+    
+    <!-- Validation Messages -->
+    <string name="event_description_required">תיאור האירוע נדרש</string>
+    <string name="at_least_one_feeling_required">נדרש לפחות רגש אחד</string>
+    
+    <!-- Additional Form Text -->
+    <string name="add_feelings_description">הוסף את הרגשות שלך עם רמות עוצמה:</string>
+    <string name="remove_feeling_content_description">הסר רגש</string>
+    <string name="back_content_description">חזור</string>
+    
+    <!-- Review Step Labels -->
+    <string name="review_event_description">תיאור האירוע</string>
+    <string name="review_thoughts">מחשבות</string>
+    <string name="review_feelings">רגשות</string>
+    <string name="review_behaviour">התנהגות</string>
+    <string name="review_symptoms">תסמינים</string>
+    
+    <!-- Step Descriptions -->
+    <string name="step_description_event">תאר את האירוע שגרם לכרטיס זה</string>
+    <string name="step_description_thoughts">אילו מחשבות היו לך על האירוע הזה?</string>
+    <string name="step_description_feelings">אילו רגשות חווית? (עם עוצמה)</string>
+    <string name="step_description_behavior">איך התנהגת בתגובה לאירוע הזה?</string>
+    <string name="step_description_symptoms">אילו תסמינים פיזיים או רגשיים הבחנת?</string>
+    <string name="step_description_review">סקור את כל המידע לפני יצירת הכרטיס</string>
 </resources>

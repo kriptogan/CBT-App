@@ -13,8 +13,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kriptogan.cbt_app.R
 import com.kriptogan.cbt_app.data.model.Ticket
 
 @Composable
@@ -30,13 +32,13 @@ fun TicketList(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "No tickets yet",
+                text = stringResource(R.string.no_tickets_yet),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
             )
             Text(
-                text = "Tap the + button to create your first ticket",
+                text = stringResource(R.string.tap_plus_to_create),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp)
