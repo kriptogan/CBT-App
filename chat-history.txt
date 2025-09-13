@@ -1,0 +1,29 @@
+--- First request ---
+I want to build a CBT app step by step.
+My first step would be to build a ticket system.
+
+I want a single-screen app that shows tickets, with a plus button at the top to create a new ticket.
+each ticket has the following attribute:
+
+1. creationTime //date-time of creation.
+2. eventDescription //description of the event
+3. thoughts // description of thoughts about the event
+4. feelings // description of the feeling, also each feeling should have a percentage number of intensity
+5. behaviour // description of behaviour
+6. symptoms // description of symptoms
+
+Each ticket will have:
+- title - showing the creationTime.
+- body - showing part of the eventDescription // as much as possible. show "..." if not enough space
+
+this is the basics.
+
+for the first step, please create the data model for the ticket.
+
+key notes:
+1. the app itself should be in hebrew (the code and the chat we are working with stays in english)
+* make sure to force RTL on all devices
+2. the app should prevent rotation, but some of the future content will be horizontal (like table)
+
+please keep in mind the cursor rules I asked you to read when we started.
+------------------------------------------------------------------------------------------------
