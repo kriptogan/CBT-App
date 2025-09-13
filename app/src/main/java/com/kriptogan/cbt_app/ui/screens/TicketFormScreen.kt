@@ -154,24 +154,51 @@ fun TicketFormScreen(
                     }
                 }
                 
-                // Next/Finish button
-                Button(
-                    onClick = {
-                        if (currentStep < totalSteps - 1) {
-                            currentStep++
-                        } else {
-                            // Save ticket and go back
-                            val validFeelings = feelings.filter { it.isValid() }
-                            val ticket = Ticket(
-                                creationTime = LocalDateTime.now(),
-                                eventDescription = eventDescription,
-                                thoughts = thoughts,
-                                feelings = validFeelings,
-                                behaviour = behaviour,
-                                symptoms = symptoms
-                            )
-                            TicketRepository.addTicket(ticket)
-                            onBack()
+                    // Next/Finish button
+                    Button(
+                        onClick = {
+                            if (currentStep < totalSteps - 1) {
+                                currentStep++
+                            } else {
+                                // Validate required fields before finishing
+                                if (eventDescription.isBlank() || thoughts.isBlank() || behaviour.isBlank() || symptoms.isBlank()) {
+                                    android.util.Log.w("TicketForm", "Cannot finish: required fields are empty")
+                                    return@Button
+                                }
+                                
+                                val validFeelings = feelings.filter { it.isValid() }
+                                if (validFeelings.isEmpty()) {
+                                    android.util.Log.w("TicketForm", "Cannot finish: no valid feelings")
+                                    return@Button
+                                }
+                                
+                                // Save ticket and go back
+                                android.util.Log.d("TicketForm", "Finishing ticket creation...")
+                                android.util.Log.d("TicketForm", "Valid feelings count: ${validFeelings.size}")
+                            
+                            try {
+                                val creationTime = LocalDateTime.now()
+                                android.util.Log.d("TicketForm", "Creating ticket with creation time: $creationTime")
+                                
+                                val ticket = Ticket(
+                                    creationTime = creationTime,
+                                    eventDescription = eventDescription,
+                                    thoughts = thoughts,
+                                    feelings = validFeelings,
+                                    behaviour = behaviour,
+                                    symptoms = symptoms
+                                )
+                                android.util.Log.d("TicketForm", "Ticket created successfully with title: ${ticket.getTitle()}")
+                                
+                                val savedTicket = TicketRepository.addTicket(ticket)
+                                android.util.Log.d("TicketForm", "Ticket saved to repository: ${savedTicket.getTitle()}")
+                                
+                                onBack()
+                            } catch (e: Exception) {
+                                android.util.Log.e("TicketForm", "Error creating/saving ticket", e)
+                                // Still go back to prevent user from being stuck
+                                onBack()
+                            }
                         }
                     },
                     modifier = Modifier.fillMaxWidth()

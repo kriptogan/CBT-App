@@ -23,8 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import com.kriptogan.cbt_app.data.model.Ticket
 import com.kriptogan.cbt_app.data.repository.TicketRepository
 import com.kriptogan.cbt_app.ui.components.TicketList
@@ -35,6 +37,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
         setContent {
             CBTappTheme {
                 MainScreen()
@@ -47,6 +50,14 @@ class MainActivity : ComponentActivity() {
 fun MainScreen() {
     var showForm by remember { mutableStateOf(false) }
     var tickets by remember { mutableStateOf<List<Ticket>>(emptyList()) }
+    val context = LocalContext.current
+    
+    // Initialize repository and load tickets
+    LaunchedEffect(Unit) {
+        android.util.Log.d("datastore test", "MainActivity: Starting repository initialization...")
+        tickets = TicketRepository.initialize(context)
+        android.util.Log.d("datastore test", "MainActivity: Repository initialized, loaded ${tickets.size} tickets")
+    }
     
     // Refresh tickets when returning from form
     LaunchedEffect(showForm) {

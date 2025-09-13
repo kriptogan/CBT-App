@@ -1,25 +1,59 @@
 package com.kriptogan.cbt_app.data.repository
 
+import android.content.Context
 import com.kriptogan.cbt_app.data.model.Ticket
+import com.kriptogan.cbt_app.data.persistence.TicketJsonDataStoreManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 /**
- * Repository class for managing tickets in local memory storage.
+ * Repository class for managing tickets with persistent storage.
  * Implements object-oriented approach with singleton pattern for global state management.
  */
 object TicketRepository {
     private val tickets = mutableListOf<Ticket>()
+    private var dataStoreManager: TicketJsonDataStoreManager? = null
+    private var isInitialized = false
+    private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    
+    /**
+     * Initializes the repository with a context for persistent storage.
+     * This should be called once when the app starts.
+     * @return List of loaded tickets
+     */
+    suspend fun initialize(context: Context): List<Ticket> {
+        if (!isInitialized) {
+            dataStoreManager = TicketJsonDataStoreManager(context)
+            loadTicketsFromStorage()
+            isInitialized = true
+        }
+        return tickets.toList()
+    }
     
     /**
      * Adds a new ticket to the repository.
      * 
      * @param ticket The ticket to add
-     * @return The added ticket with updated creation time
+     * @return The added ticket
      */
     fun addTicket(ticket: Ticket): Ticket {
-        val ticketWithTime = ticket.copy(creationTime = LocalDateTime.now())
-        tickets.add(ticketWithTime)
-        return ticketWithTime
+        android.util.Log.d("TicketRepository", "Adding ticket: ${ticket.getTitle()}")
+        android.util.Log.d("TicketRepository", "Creation time: ${ticket.creationTime}")
+        
+        // Use the ticket as-is without overriding creation time
+        tickets.add(ticket)
+        android.util.Log.d("TicketRepository", "Ticket added to memory, total tickets: ${tickets.size}")
+        android.util.Log.d("TicketRepository", "Final ticket title: ${ticket.getTitle()}")
+        
+        repositoryScope.launch {
+            saveTicketsToStorage()
+        }
+        
+        android.util.Log.d("TicketRepository", "Ticket save operation initiated")
+        return ticket
     }
     
     /**
@@ -51,6 +85,9 @@ object TicketRepository {
         val index = tickets.indexOfFirst { it.creationTime == updatedTicket.creationTime }
         return if (index != -1) {
             tickets[index] = updatedTicket
+            repositoryScope.launch {
+                saveTicketsToStorage()
+            }
             true
         } else {
             false
@@ -64,7 +101,13 @@ object TicketRepository {
      * @return true if the ticket was removed, false if not found
      */
     fun removeTicket(creationTime: LocalDateTime): Boolean {
-        return tickets.removeIf { it.creationTime == creationTime }
+        val removed = tickets.removeIf { it.creationTime == creationTime }
+        if (removed) {
+            repositoryScope.launch {
+                saveTicketsToStorage()
+            }
+        }
+        return removed
     }
     
     /**
@@ -72,6 +115,9 @@ object TicketRepository {
      */
     fun clearAllTickets() {
         tickets.clear()
+        repositoryScope.launch {
+            saveTicketsToStorage()
+        }
     }
     
     /**
@@ -81,5 +127,39 @@ object TicketRepository {
      */
     fun getTicketCount(): Int {
         return tickets.size
+    }
+    
+    /**
+     * Loads tickets from persistent storage.
+     */
+    private suspend fun loadTicketsFromStorage() {
+        android.util.Log.d("datastore test", "Repository: Initiating load from storage...")
+        
+        dataStoreManager?.let { manager ->
+            android.util.Log.d("datastore test", "Repository: DataStore manager found, calling loadTickets()")
+            val savedTickets = manager.loadTickets()
+            android.util.Log.d("datastore test", "Repository: Loaded ${savedTickets.size} tickets from DataStore")
+            
+            tickets.clear()
+            tickets.addAll(savedTickets)
+            android.util.Log.d("datastore test", "Repository: Tickets loaded into memory, total: ${tickets.size}")
+        } ?: run {
+            android.util.Log.e("datastore test", "Repository: ❌ DataStore manager is null during load!")
+        }
+    }
+    
+    /**
+     * Saves tickets to persistent storage.
+     */
+    private suspend fun saveTicketsToStorage() {
+        android.util.Log.d("datastore test", "Repository: Initiating save to storage...")
+        android.util.Log.d("datastore test", "Repository: Current tickets in memory: ${tickets.size}")
+        
+        dataStoreManager?.let { manager ->
+            android.util.Log.d("datastore test", "Repository: DataStore manager found, calling saveTickets()")
+            manager.saveTickets(tickets)
+        } ?: run {
+            android.util.Log.e("datastore test", "Repository: ❌ DataStore manager is null!")
+        }
     }
 }
