@@ -174,19 +174,30 @@ private fun TableColumn(
                 .padding(8.dp)
         )
         
-        // Content with better styling
-        Text(
-            text = content,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color(0xFF424242),
-            textAlign = TextAlign.Start,
+        // Content with better styling and scrollable
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .weight(1f)
                 .background(
                     color = Color(0xFFFAFAFA),
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(12.dp)
-        )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(
+                    text = content,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFF424242),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
     }
 }
