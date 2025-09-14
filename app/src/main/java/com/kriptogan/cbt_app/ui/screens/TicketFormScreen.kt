@@ -1,5 +1,6 @@
 package com.kriptogan.cbt_app.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -39,6 +41,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -64,33 +69,52 @@ fun TicketFormScreen(
     var behaviour by remember { mutableStateOf("") }
     var symptoms by remember { mutableStateOf("") }
     
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { 
-                    Text(
-                        when (currentStep) {
-                            0 -> stringResource(R.string.step_event)
-                            1 -> stringResource(R.string.step_thoughts)
-                            2 -> stringResource(R.string.step_feelings)
-                            3 -> stringResource(R.string.step_behavior)
-                            4 -> stringResource(R.string.step_symptoms)
-                            5 -> stringResource(R.string.step_review)
-                            else -> stringResource(R.string.step_event)
-                        } + " - ${currentStep + 1}/$totalSteps"
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFFE8F5E8), // Light green
+                        Color(0xFFC8E6C9), // Medium green
+                        Color(0xFFA5D6A7)  // Darker green
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.back_content_description)
-                        )
-                    }
-                }
+                )
             )
-        }
-    ) { innerPadding ->
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { 
+                        Text(
+                            when (currentStep) {
+                                0 -> stringResource(R.string.step_event)
+                                1 -> stringResource(R.string.step_thoughts)
+                                2 -> stringResource(R.string.step_feelings)
+                                3 -> stringResource(R.string.step_behavior)
+                                4 -> stringResource(R.string.step_symptoms)
+                                5 -> stringResource(R.string.step_review)
+                                else -> stringResource(R.string.step_event)
+                            } + " - ${currentStep + 1}/$totalSteps"
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = stringResource(R.string.back_content_description)
+                            )
+                        }
+                    },
+                    colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color(0xFF4CAF50),
+                        titleContentColor = Color.White,
+                        navigationIconContentColor = Color.White
+                    )
+                )
+            },
+            containerColor = Color.Transparent
+        ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -235,6 +259,7 @@ fun TicketFormScreen(
             }
         }
     }
+    } // Close Box
 }
 
 @Composable

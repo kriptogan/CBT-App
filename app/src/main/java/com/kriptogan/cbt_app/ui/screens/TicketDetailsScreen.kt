@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,27 +44,46 @@ fun TicketDetailsScreen(
     ticket: Ticket,
     onBack: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.ticket_details_title)) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.back_content_description)
-                        )
-                    }
-                }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFFFFF3E0), // Light orange
+                        Color(0xFFFFE0B2), // Medium orange
+                        Color(0xFFFFCC80)  // Darker orange
+                    )
+                )
             )
-        }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
-        ) {
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(stringResource(R.string.ticket_details_title)) },
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = stringResource(R.string.back_content_description)
+                            )
+                        }
+                    },
+                    colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color(0xFFFF9800),
+                        titleContentColor = Color.White,
+                        navigationIconContentColor = Color.White
+                    )
+                )
+            },
+            containerColor = Color.Transparent
+        ) { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp)
+            ) {
             // Horizontal table layout
             Row(
                 modifier = Modifier
@@ -108,6 +128,7 @@ fun TicketDetailsScreen(
             }
         }
     }
+    } // Close outer Box
 }
 
 @Composable
@@ -120,34 +141,52 @@ private fun TableColumn(
         modifier = modifier
             .fillMaxSize()
             .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline,
-                shape = RoundedCornerShape(8.dp)
+                width = 2.dp,
+                color = Color(0xFFFF9800),
+                shape = RoundedCornerShape(12.dp)
             )
-            .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color.White,
+                        Color(0xFFFFF8E1)
+                    )
+                )
+            )
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Header
+        // Header with enhanced styling
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
+            color = Color(0xFFFF9800),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
+                .background(
+                    color = Color(0xFFFFF3E0),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(8.dp)
         )
         
-        // Content
+        // Content with better styling
         Text(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = Color(0xFF424242),
             textAlign = TextAlign.Start,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = Color(0xFFFAFAFA),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(12.dp)
         )
     }
 }
