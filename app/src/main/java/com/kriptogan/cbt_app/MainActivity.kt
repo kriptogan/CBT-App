@@ -36,6 +36,7 @@ import com.kriptogan.cbt_app.data.model.Ticket
 import com.kriptogan.cbt_app.data.repository.TicketRepository
 import com.kriptogan.cbt_app.ui.components.TicketList
 import com.kriptogan.cbt_app.ui.screens.TicketFormScreen
+import android.content.Intent
 import com.kriptogan.cbt_app.ui.theme.CBTappTheme
 
 class MainActivity : ComponentActivity() {
@@ -81,6 +82,11 @@ fun MainScreen() {
             // Ticket list
             TicketList(
                 tickets = tickets,
+                onTicketClick = { ticket ->
+                    val intent = Intent(context, TicketDetailsActivity::class.java)
+                    intent.putExtra("ticket", ticket)
+                    context.startActivity(intent)
+                },
                 modifier = Modifier.fillMaxSize()
             )
             

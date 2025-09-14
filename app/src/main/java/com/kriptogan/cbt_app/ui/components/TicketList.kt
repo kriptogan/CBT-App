@@ -1,5 +1,6 @@
 package com.kriptogan.cbt_app.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import com.kriptogan.cbt_app.data.model.Ticket
 @Composable
 fun TicketList(
     tickets: List<Ticket>,
+    onTicketClick: (Ticket) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     if (tickets.isEmpty()) {
@@ -56,7 +58,10 @@ fun TicketList(
             )
         ) {
             items(tickets) { ticket ->
-                TicketCard(ticket = ticket)
+                TicketCard(
+                    ticket = ticket,
+                    onClick = { onTicketClick(ticket) }
+                )
             }
         }
     }
@@ -65,10 +70,13 @@ fun TicketList(
 @Composable
 private fun TicketCard(
     ticket: Ticket,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(

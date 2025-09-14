@@ -56,4 +56,12 @@
     <string name="step_description_behavior">איך התנהגת בתגובה לאירוע הזה?</string>
     <string name="step_description_symptoms">אילו תסמינים פיזיים או רגשיים הבחנת?</string>
     <string name="step_description_review">סקור את כל המידע לפני יצירת הכרטיס</string>
+    
+    <!-- Ticket Details Table -->
+    <string name="table_column_event">תאור הארוע</string>
+    <string name="table_column_thoughts">מחשבה</string>
+    <string name="table_column_feelings">רגש ועוצמה</string>
+    <string name="table_column_behavior">התנהגות</string>
+    <string name="table_column_symptoms">סימפטומים</string>
+    <string name="ticket_details_title">פרטי הכרטיס</string>
 </resources>

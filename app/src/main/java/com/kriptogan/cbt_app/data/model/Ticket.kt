@@ -1,5 +1,6 @@
 package com.kriptogan.cbt_app.data.model
 
+import java.io.Serializable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -20,7 +21,7 @@ data class Ticket(
     val feelings: List<Feelings>,
     val behaviour: String,
     val symptoms: String
-) {
+) : Serializable {
     init {
         require(eventDescription.isNotBlank()) { "Event description cannot be blank" }
         require(thoughts.isNotBlank()) { "Thoughts cannot be blank" }

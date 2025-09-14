@@ -1,5 +1,7 @@
 package com.kriptogan.cbt_app.data.model
 
+import java.io.Serializable
+
 /**
  * Data class representing a feeling with its description and intensity level.
  * 
@@ -9,7 +11,7 @@ package com.kriptogan.cbt_app.data.model
 data class Feelings(
     val description: String,
     val intensity: Int
-) {
+) : Serializable {
     init {
         require(intensity in 0..100) { "Intensity must be between 0 and 100" }
     }

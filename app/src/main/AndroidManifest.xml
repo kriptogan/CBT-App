@@ -24,6 +24,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name=".TicketDetailsActivity"
+            android:exported="false"
+            android:label="@string/ticket_details_title"
+            android:theme="@style/Theme.CBTapp"
+            android:screenOrientation="landscape"
+            android:supportsPictureInPicture="false" />
     </application>
 
 </manifest>
